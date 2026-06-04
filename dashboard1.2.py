@@ -6,7 +6,6 @@ import plotly.graph_objects as go
 import streamlit as st
 st.set_page_config(page_title="Health Insights Dashboard", layout="wide")
 
-# --- CSS DEFINITIVO ---
 st.markdown("""
     <style>
         /* Apuntamos al contenedor del slider y forzamos el color en todos sus estados */
@@ -27,8 +26,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-
-# --- Estilos del título ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -59,7 +56,6 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# --- Cargar datos ---
 cases = pd.read_csv("Cases_cleanok.csv")
 cases['date'] = pd.to_datetime(cases['date'])
 cases['year'] = cases['date'].dt.year
@@ -140,8 +136,8 @@ if not df_not.empty:
     not_max = df_not.loc[df_not["Value"].idxmax()]
 else:
     not_max = {"Value": 0.0, "Subgroup": "No Data"}
-
-# KPIs superiores
+    
+# KPIs 
 st.markdown("Per year metrics in USA")
 kpi_cols = st.columns(7)
 labels = ["Confirmed", "Deaths", "Ever Long COVID", "Current Long COVID", "Activity Limits", "Delayed Care", "Omitted Care"]
@@ -429,7 +425,6 @@ with col_right:
 
 with col_left:
     if selected_type == "both":
-        # Confirmed y Deaths siempre
         val_conf_cut = df_us_selected[
             (df_us_selected['type']=="confirmed") & 
             (df_us_selected['month'] <= st.session_state.selected_cut)
@@ -443,7 +438,7 @@ with col_left:
         comparison_conf, comparison_death = "", ""
 
         if selected_year == "2021":
-            # Comparación contra 2020
+            
             val_conf_prev = cases[
                 (cases['year'] == 2020) &
                 (cases['country'].str.upper() == "US") &
@@ -465,7 +460,7 @@ with col_left:
             comparison_death = f"{perc_death:.1f}% vs same month 2020"
 
         elif selected_year == "2020-2021":
-            # Mostrar acumulados de ambos años
+            
             val_conf_2020 = cases[
                 (cases['year'] == 2020) &
                 (cases['country'].str.upper() == "US") &
@@ -496,11 +491,11 @@ with col_left:
             comparison_death = f"2020: {format_number(val_death_2020)} | 2021: {format_number(val_death_2021)}"
 
         elif selected_year == "2020":
-            # Solo mostrar acumulado de 2020
+            
             comparison_conf = "Accumulated in 2020"
             comparison_death = "Accumulated in 2020"
 
-        # Renderizado doble KPI
+        
         st.html(f"""
         <div style="text-align:center; height:340px; display:flex; flex-direction:column; justify-content:center; align-items:center; font-family:'Inter', sans-serif; background: transparent;">
             
@@ -536,7 +531,7 @@ with col_left:
         </div>
         """)
     else:
-        # Renderizado estándar para tipo individual
+        
         df_single_type = df_us_selected[df_us_selected['month'] <= st.session_state.selected_cut]
         main_kpi_value = df_single_type['cases'].sum()
         
@@ -627,14 +622,12 @@ for ind, col in zip(indicators, [col1, col2]):
 
     df_ind["date"] = pd.to_datetime(df_ind["date"])
 
-    # --- PROMEDIO ACUMULADO HASTA EL MES SELECCIONADO ---
     df_ind = df_ind[df_ind["date"] <= st.session_state.selected_cut]
     df_ind = df_ind.groupby("Subgroup", as_index=False)["Value"].mean()
 
-    # Top 3 estados con peor acceso en ese periodo acumulado
+
     df_top = df_ind.sort_values("Value", ascending=False).head(3)
-    
-    # Protección anti-vacíos
+
     if not df_top.empty:
         max_group = df_top.loc[df_top["Value"].idxmax(), "Subgroup"]
         max_val = df_top["Value"].max()
@@ -711,7 +704,7 @@ st.subheader("Long COVID Analysis")
 st.caption("Prevalence of chronic symptoms post covid per age group in % of adults in USA.")
 
 
-### 🟣 Long COVID Effects
+### Long COVID Effects
 st.markdown("""
     <div style="background-color:#ede9fe; padding:15px; border-radius:8px; border-left:5px solid #6d28d9;">
         <div style="color:#6d28d9; font-size:14px; font-weight:bold;">Insight 1</div>
@@ -755,7 +748,7 @@ for q, col in zip(questions, [col1, col2, col3]):
 
     df_top["color"] = ["#6d28d9" if v == max_val else "#d1d5db" for v in df_top["Value"]]
 
-    # TRUCO PROFESIONAL: Combinamos título y subtítulo en un solo bloque HTML centrado
+    
     full_title_html = (
         f"<b>{q}</b><br>"
         f"<span style='font-size:11px; font-weight:normal; color:#6b7280; font-family:Inter;'>{context_text}</span>"
@@ -767,7 +760,7 @@ for q, col in zip(questions, [col1, col2, col3]):
         y="Value",
         text="Value",
         color="color",
-        title=full_title_html, # <- Inyectamos el bloque completo aquí
+        title=full_title_html, 
         color_discrete_map={"#6d28d9": "#6d28d9", "#d1d5db": "#d1d5db"}
     )
 
@@ -787,23 +780,23 @@ for q, col in zip(questions, [col1, col2, col3]):
             font=dict(size=14, family="Inter", color="#1f2937"),
             x=0.5, 
             xanchor="center",
-            y=0.93 # Lo sube sutilmente para balancear el espacio del subtítulo
+            y=0.93 
         ),
-        # Eliminamos la sección 'annotations' anterior para evitar duplicados molestos
+    
         xaxis_title="Age Group",
         yaxis_title="Percentage (%)",
         showlegend=False,
         xaxis=dict(showgrid=False, categoryorder="total descending"),
         yaxis=dict(showgrid=False, range=[0, y_max_range]),
         bargap=0.4,
-        height=360, # Ajuste milimétrico para dar espacio al nuevo bloque de texto
+        height=360,
         margin=dict(t=75, b=40)  
     )
 
     with col:
         st.plotly_chart(fig, use_container_width=True)
 
-        # Explicación debajo
+    
         if "Ever" in q:
             st.markdown(f"""
             **Explanation (2022):** The highest prevalence of *ever experiencing Long COVID* was in **{max_group}** ({max_val:.1f}%).  
