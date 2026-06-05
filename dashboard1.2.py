@@ -370,6 +370,8 @@ with col_right:
         height=340, plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)"
     )
 
+    fig.update_yaxes(showgrid=False)
+    fig.update_xaxes(showgrid=False)
   
     st.plotly_chart(fig, use_container_width=True, key=f"chart_cases_{selected_year}_{selected_type}")
 
