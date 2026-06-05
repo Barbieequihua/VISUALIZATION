@@ -363,7 +363,12 @@ with col_right:
     if selected_type == "both" and yaxis2_layout:
         layout_kwargs["yaxis2"] = yaxis2_layout
 
-    fig.update_layout(**layout_kwargs)
+    fig.update_layout(
+        title=dict(text="Cases per month", font=dict(size=14, color="#1f2937")),
+        xaxis=dict(title=dict(text="Month", font=dict(color="#6e6e6e")), tickfont=dict(color="#6e6e6e", size=9)),
+        yaxis=dict(title=dict(text="Cases", font=dict(color="#6d28d9")), tickfont=dict(color="#6d28d9", size=10)),
+        height=340, plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)"
+    )
 
   
     st.plotly_chart(fig, use_container_width=True, key=f"chart_cases_{selected_year}_{selected_type}")
