@@ -363,11 +363,22 @@ with col_right:
     if selected_type == "both" and yaxis2_layout:
         layout_kwargs["yaxis2"] = yaxis2_layout
 
+    # 1. Configuración de posición para que no se encimen
     fig.update_layout(
-        title=dict(text="Cases per month", font=dict(size=14, color="#1f2937")),
-        xaxis=dict(title=dict(text="Month", font=dict(color="#6e6e6e")), tickfont=dict(color="#6e6e6e", size=9)),
-        yaxis=dict(title=dict(text="Cases", font=dict(color="#6d28d9")), tickfont=dict(color="#6d28d9", size=10)),
-        height=340, plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)"
+        yaxis=dict(
+            title=dict(text="Confirmed Cases", font=dict(color="#6d28d9", size=11)),
+            tickfont=dict(color="#6d28d9", size=10),
+            showgrid=False,
+            side="left"  # Fuerza el eje principal a la izquierda
+        ),
+        yaxis2=dict(
+            title=dict(text="Deaths", font=dict(color="#a78bfa", size=11)),
+            tickfont=dict(color="#a78bfa", size=10),
+            showgrid=False,
+            overlaying="y", # Esto es lo que permite que compartan el mismo espacio
+            side="right"    # Fuerza el secundario a la derecha
+        ),
+        xaxis=dict(showgrid=False)
     )
 
     fig.update_yaxes(showgrid=False)
