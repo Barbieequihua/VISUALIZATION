@@ -371,7 +371,6 @@ with col_right:
     )
 
     fig.update_yaxes(showgrid=False)
-    fig.update_yaxes2(showgrid=False)
     fig.update_xaxes(showgrid=False)
   
     st.plotly_chart(fig, use_container_width=True, key=f"chart_cases_{selected_year}_{selected_type}")
