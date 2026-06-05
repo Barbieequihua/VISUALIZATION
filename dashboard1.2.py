@@ -347,13 +347,15 @@ with col_right:
             titlefont=dict(color="#6e6e6e"), tickfont=dict(color="#6e6e6e", size=9),
             tickangle=-30,            
             dtick="M2" if selected_year == "2020-2021" else "M1",
-            range=[df_monthly_control['month'].min(), df_monthly_control['month'].max()]
+            showgrid=False
+            range=[df_monthly_control['month'].min(), df_monthly_control['month'].max()],
         ),
         yaxis=yaxis_layout,
         height=340,
         margin=dict(l=10, r=10, t=40, b=80), 
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         showlegend=True,
+        showgrid=False
         legend=dict(
             orientation="h", yanchor="bottom", y=0.01, yref="container",
             xanchor="center", x=0.5, font=dict(size=10)
@@ -367,8 +369,7 @@ with col_right:
         title=dict(text="Cases per month", font=dict(size=14, color="#1f2937")),
         xaxis=dict(title=dict(text="Month", font=dict(color="#6e6e6e")), tickfont=dict(color="#6e6e6e", size=9)),
         yaxis=dict(title=dict(text="Cases", font=dict(color="#6d28d9")), tickfont=dict(color="#6d28d9", size=10)),
-        height=340, plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)",
-        showgrid = False
+        height=340, plot_bgcolor="rgba(0,0,0,0)", paper_bgcolor="rgba(0,0,0,0)"
     )
 
   
