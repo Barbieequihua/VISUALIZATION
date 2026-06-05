@@ -363,22 +363,33 @@ with col_right:
     if selected_type == "both" and yaxis2_layout:
         layout_kwargs["yaxis2"] = yaxis2_layout
 
-    # 1. Configuración de posición para que no se encimen
     fig.update_layout(
+   
+        legend=dict(
+            orientation="h",  
+            yanchor="top",
+            y=-0.2,          
+            xanchor="center",
+            x=0.5
+        ),
+        margin=dict(t=50, b=50, l=50, r=50), 
+        
         yaxis=dict(
             title=dict(text="Confirmed Cases", font=dict(color="#6d28d9", size=11)),
             tickfont=dict(color="#6d28d9", size=10),
             showgrid=False,
-            side="left"  # Fuerza el eje principal a la izquierda
+            side="left"
         ),
         yaxis2=dict(
             title=dict(text="Deaths", font=dict(color="#a78bfa", size=11)),
             tickfont=dict(color="#a78bfa", size=10),
             showgrid=False,
-            overlaying="y", # Esto es lo que permite que compartan el mismo espacio
-            side="right"    # Fuerza el secundario a la derecha
+            overlaying="y",
+            side="right"
         ),
-        xaxis=dict(showgrid=False)
+        xaxis=dict(showgrid=False),
+        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)"
     )
 
     fig.update_yaxes(showgrid=False)
