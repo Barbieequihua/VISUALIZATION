@@ -347,7 +347,6 @@ with col_right:
             titlefont=dict(color="#6e6e6e"), tickfont=dict(color="#6e6e6e", size=9),
             tickangle=-30,            
             dtick="M2" if selected_year == "2020-2021" else "M1",
-            showgrid=False
             range=[df_monthly_control['month'].min(), df_monthly_control['month'].max()],
         ),
         yaxis=yaxis_layout,
@@ -355,7 +354,6 @@ with col_right:
         margin=dict(l=10, r=10, t=40, b=80), 
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         showlegend=True,
-        showgrid=False
         legend=dict(
             orientation="h", yanchor="bottom", y=0.01, yref="container",
             xanchor="center", x=0.5, font=dict(size=10)
